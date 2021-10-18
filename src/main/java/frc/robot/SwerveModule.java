@@ -43,8 +43,8 @@ public class SwerveModule {
    * @param turningMotorChannel ID for the turning motor.
    */
   public SwerveModule(int driveMotorChannel, int turningMotorChannel) {
-    m_driveMotor = new PWMVictorSPX(driveMotorChannel);
-    m_turningMotor = new PWMVictorSPX(turningMotorChannel);
+    m_driveMotor = new PWTalonFX(driveMotorChannel);
+    m_turningMotor = new PWTalonFX(turningMotorChannel);
 
     // Set the distance per pulse for the drive encoder. We can simply use the
     // distance traveled for one rotation of the wheel divided by the encoder
