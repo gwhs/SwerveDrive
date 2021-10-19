@@ -45,37 +45,37 @@ import frc.robot.subsystems.Shooter;
  */
 public class DaphneOneContainer {
   private final XboxController mXboxController;
-  private final XboxController mXboxController2;
+ // private final XboxController mXboxController2;
 
   private final SwerveDriveSubsystem swerveDriveSubsystem;
-  private final ColorPanelSpinner colorPanelSpinner;
-  private final ColorSensor colorSensor;
-  private final Limelight limelight;
-  private final ConveyorTalon conveyor;
-  private final Intake intake;
-  private final Shooter shooter;
-  private final Compressor compressor;
-  private final ClimberTalon climber;
+//   private final ColorPanelSpinner colorPanelSpinner;
+//   private final ColorSensor colorSensor;
+//   private final Limelight limelight;
+//   private final ConveyorTalon conveyor;
+//   private final Intake intake;
+//   private final Shooter shooter;
+//   private final Compressor compressor;
+//   private final ClimberTalon climber;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public DaphneOneContainer() {
     // create all the subsystems needed in this robot
-    SwerveDriveModule m0 = new SwerveDriveModule(0, new TalonSRX(DaphneOneConstants.ANGLE1_TALON), new TalonFX(DaphneOneConstants.DRIVE1_TALON), 169); //2020: 70
-    SwerveDriveModule m1 = new SwerveDriveModule(1, new TalonSRX(DaphneOneConstants.ANGLE2_TALON), new TalonFX(DaphneOneConstants.DRIVE2_TALON), 176); //2020: 211
-    SwerveDriveModule m2 = new SwerveDriveModule(2, new TalonSRX(DaphneOneConstants.ANGLE3_TALON), new TalonFX(DaphneOneConstants.DRIVE3_TALON), 292); //2020: 307
-    SwerveDriveModule m3 = new SwerveDriveModule(3, new TalonSRX(DaphneOneConstants.ANGLE4_TALON), new TalonFX(DaphneOneConstants.DRIVE4_TALON), 28); //2020: 150
+    SwerveDriveModule m0 = new SwerveDriveModule(0, new TalonSRX(DaphneOneConstants.ANGLE1_TALON), new TalonFX(DaphneOneConstants.DRIVE1_TALON), 169); //NEED TO CHANGE
+    SwerveDriveModule m1 = new SwerveDriveModule(1, new TalonSRX(DaphneOneConstants.ANGLE2_TALON), new TalonFX(DaphneOneConstants.DRIVE2_TALON), 176); //NEED TO CHANGE
+    SwerveDriveModule m2 = new SwerveDriveModule(2, new TalonSRX(DaphneOneConstants.ANGLE3_TALON), new TalonFX(DaphneOneConstants.DRIVE3_TALON), 292); //NEED TO CHANGE
+    SwerveDriveModule m3 = new SwerveDriveModule(3, new TalonSRX(DaphneOneConstants.ANGLE4_TALON), new TalonFX(DaphneOneConstants.DRIVE4_TALON), 28); //NEED TO CHANGE
 
     swerveDriveSubsystem = new SwerveDriveSubsystem(m0, m1, m2, m3);
-    colorPanelSpinner = new ColorPanelSpinner();
-    colorSensor = new ColorSensor();
-    limelight = new Limelight(swerveDriveSubsystem);
-    conveyor = new ConveyorTalon();
-    intake = new Intake();
-    shooter = new Shooter();
-    compressor = new Compressor();
-    climber = new ClimberTalon();
+    // colorPanelSpinner = new ColorPanelSpinner();
+    // colorSensor = new ColorSensor();
+    // limelight = new Limelight(swerveDriveSubsystem);
+    // conveyor = new ConveyorTalon();
+    // intake = new Intake();
+    // shooter = new Shooter();
+    // compressor = new Compressor();
+    // climber = new ClimberTalon();
 
     // create the input controllers
     mXboxController = new XboxController(0);
@@ -117,19 +117,19 @@ public class DaphneOneContainer {
     JoystickButton buttonBack_2 = new JoystickButton(mXboxController2, XboxController.Button.kBack.value);
     JoystickButton buttonStart_2 = new JoystickButton(mXboxController2, XboxController.Button.kStart.value);
     
-    buttonA.whenPressed(new ToggleIntake(intake));
-    buttonB.whileHeld(new IntakeSpeed(intake,-1));
-    buttonX.whileHeld(new IntakeSpeed(intake,.5));
-    buttonY.whileHeld(new ConveyorSpeed(conveyor, -.8));
-    buttonLB.whileHeld(new ConveyorSpeed( conveyor,.5));
-    buttonBack.whenPressed(new ZeroNavX(swerveDriveSubsystem));
+    // buttonA.whenPressed(new ToggleIntake(intake));
+    // buttonB.whileHeld(new IntakeSpeed(intake,-1));
+    // buttonX.whileHeld(new IntakeSpeed(intake,.5));
+    // buttonY.whileHeld(new ConveyorSpeed(conveyor, -.8));
+    // buttonLB.whileHeld(new ConveyorSpeed( conveyor,.5));
+    // buttonBack.whenPressed(new ZeroNavX(swerveDriveSubsystem));
 
 
-    buttonB_2.whenPressed(new SemiAutoClimb(climber));
-    buttonX_2.whenPressed(new SemiAutoPullUp(climber));
-    buttonY_2.whenPressed(new ToggleClimberGearLock(climber));
-    buttonLB_2.whenPressed(new SpinToColor(colorSensor, colorPanelSpinner));
-    buttonBack_2.whenPressed(new SpinToMidColor(colorSensor, colorPanelSpinner));
+    // buttonB_2.whenPressed(new SemiAutoClimb(climber));
+    // buttonX_2.whenPressed(new SemiAutoPullUp(climber));
+    // buttonY_2.whenPressed(new ToggleClimberGearLock(climber));
+    // buttonLB_2.whenPressed(new SpinToColor(colorSensor, colorPanelSpinner));
+    // buttonBack_2.whenPressed(new SpinToMidColor(colorSensor, colorPanelSpinner));
     // buttonStart_2.
   }
 
