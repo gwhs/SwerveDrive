@@ -180,21 +180,21 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain { // + is clockwis
 			
 	} // 2/12/19 3:37 PM i want boba and a burrito so bad right now !!!!!!!!!
 
-	public void swapPIDSlot(int slot)
-	{
-		for(int i = 0; i < 4; i++)
-		{
-			mSwerveModules[i].setPIDSlot(slot);
-		}
-	}
+	// public void swapPIDSlot(int slot)
+	// {
+	// 	for(int i = 0; i < 4; i++)
+	// 	{
+	// 		mSwerveModules[i].setPIDSlot(slot);
+	// 	}
+	// }
 
-	public void swapDrivePIDSlot(int slot)
-	{
-		for(int i = 0; i < 4; i++)
-		{
-			mSwerveModules[i].setDrivePIDSlot(slot);
-		}
-	}
+	// public void swapDrivePIDSlot(int slot)
+	// {
+	// 	for(int i = 0; i < 4; i++)
+	// 	{
+	// 		mSwerveModules[i].setDrivePIDSlot(slot);
+	// 	}
+	// }
 
 	public void driveSidewaysDistance(double targetPos, double angle, double speed) {
 		double angleError = ((angle - mNavX.getYaw()) / 180)*10;
@@ -218,16 +218,16 @@ public class SwerveDriveSubsystem extends HolonomicDrivetrain { // + is clockwis
 	}
 
 	@Override 
-	public void periodic() { //is this needed here?
-		SmartDashboard.putBoolean("Mod 0 Motor Inversion", mSwerveModules[0].getDriveMotor().getInverted());
-		SmartDashboard.putBoolean("Mod 1 Motor Inversion", mSwerveModules[1].getDriveMotor().getInverted());
-		SmartDashboard.putBoolean("Mod 2 Motor Inversion", mSwerveModules[2].getDriveMotor().getInverted());
-		SmartDashboard.putBoolean("Mod 3 Motor Inversion", mSwerveModules[3].getDriveMotor().getInverted());
-		SmartDashboard.putNumber("Mod 0 Angle", mSwerveModules[0].getCurrentAngle());
-		SmartDashboard.putNumber("Mod 1 Angle", mSwerveModules[1].getCurrentAngle());
-		SmartDashboard.putNumber("Mod 2 Angle", mSwerveModules[2].getCurrentAngle());
-		SmartDashboard.putNumber("Mod 3 Angle", mSwerveModules[3].getCurrentAngle());
-		SmartDashboard.putNumber("Encoder Ticks in Inches: ", mSwerveModules[3].getInches());
-	}
+	// public void periodic() { //is this needed here?
+	// 	SmartDashboard.putBoolean("Mod 0 Motor Inversion", mSwerveModules[0].getDriveMotor().getInverted());
+	// 	SmartDashboard.putBoolean("Mod 1 Motor Inversion", mSwerveModules[1].getDriveMotor().getInverted());
+	// 	SmartDashboard.putBoolean("Mod 2 Motor Inversion", mSwerveModules[2].getDriveMotor().getInverted());
+	// 	SmartDashboard.putBoolean("Mod 3 Motor Inversion", mSwerveModules[3].getDriveMotor().getInverted());
+	// 	SmartDashboard.putNumber("Mod 0 Angle", mSwerveModules[0].getCurrentAngle());
+	// 	SmartDashboard.putNumber("Mod 1 Angle", mSwerveModules[1].getCurrentAngle());
+	// 	SmartDashboard.putNumber("Mod 2 Angle", mSwerveModules[2].getCurrentAngle());
+	// 	SmartDashboard.putNumber("Mod 3 Angle", mSwerveModules[3].getCurrentAngle());
+	// 	SmartDashboard.putNumber("Encoder Ticks in Inches: ", mSwerveModules[3].getInches());
+	// }
 }
 
