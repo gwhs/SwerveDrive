@@ -26,11 +26,13 @@ public class Drivetrain {
   private final Translation2d m_backLeftLocation = new Translation2d(-0.381, 0.381);
   private final Translation2d m_backRightLocation = new Translation2d(-0.381, -0.381);
 
+  // Todo: these drive motor channel IDs need to be set
   private final SwerveModule m_frontLeft = new SwerveModule(1, 2);
   private final SwerveModule m_frontRight = new SwerveModule(3, 4);
   private final SwerveModule m_backLeft = new SwerveModule(5, 6);
   private final SwerveModule m_backRight = new SwerveModule(7, 8);
 
+  // Todo: Gyro channel ID needs to be set
   private final AnalogGyro m_gyro = new AnalogGyro(0);
 
   private final SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(
