@@ -7,9 +7,10 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
+
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.PWMVictorSPX;
-import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
@@ -24,8 +25,8 @@ public class SwerveModule {
   private static final double kModuleMaxAngularAcceleration
       = 2 * Math.PI; // radians per second squared
 
-  private final SpeedController m_driveMotor;
-  private final SpeedController m_turningMotor;
+  private final TalonFX m_driveMotor;
+  private final TalonFX m_turningMotor;
 
   private final Encoder m_driveEncoder = new Encoder(0, 1);
   private final Encoder m_turningEncoder = new Encoder(2, 3);
@@ -43,8 +44,8 @@ public class SwerveModule {
    * @param turningMotorChannel ID for the turning motor.
    */
   public SwerveModule(int driveMotorChannel, int turningMotorChannel) {
-    m_driveMotor = new PWMVictorSPX(driveMotorChannel);
-    m_turningMotor = new PWMVictorSPX(turningMotorChannel);
+    m_driveMotor = new TalonFX(driveMotorChannel);
+    m_turningMotor = new TalonFX(turningMotorChannel);
 
     // Set the distance per pulse for the drive encoder. We can simply use the
     // distance traveled for one rotation of the wheel divided by the encoder
@@ -86,7 +87,7 @@ public class SwerveModule {
     );
 
     // Calculate the turning motor output from the turning PID controller.
-    m_driveMotor.set(driveOutput);
-    m_turningMotor.set(turnOutput);
+    m_driveMotor.set(TalonFXControlMode.PercentOutput, driveOutput);
+    m_turningMotor.set(TalonFXControlMode.PercentOutput, turnOutput);
   }
 }
