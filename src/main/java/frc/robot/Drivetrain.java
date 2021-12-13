@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveOdometry;
+import frc.robot.Constants;
 
 /**
  * Represents a swerve drive style drivetrain.
@@ -26,10 +27,10 @@ public class Drivetrain {
   private final Translation2d m_backLeftLocation = new Translation2d(-0.381, 0.381);
   private final Translation2d m_backRightLocation = new Translation2d(-0.381, -0.381);
 
-  private final SwerveModule m_frontLeft = new SwerveModule(1, 2);
-  private final SwerveModule m_frontRight = new SwerveModule(3, 4);
-  private final SwerveModule m_backLeft = new SwerveModule(5, 6);
-  private final SwerveModule m_backRight = new SwerveModule(7, 8);
+  private final SwerveModule m_frontLeft = new SwerveModule(Constants.frontLeftDrive, Constants.frontLeftTurn);
+  private final SwerveModule m_frontRight = new SwerveModule(Constants.frontRightDrive, Constants.frontRightTurn);
+  private final SwerveModule m_backLeft = new SwerveModule(Constants.backLeftDrive, Constants.backLeftTurn);
+  private final SwerveModule m_backRight = new SwerveModule(Constants.backRightDrive, Constants.backRightTurn);
 
   private final AnalogGyro m_gyro = new AnalogGyro(0);
 
@@ -69,10 +70,10 @@ public class Drivetrain {
             : new ChassisSpeeds(xSpeed, ySpeed, rot)
     );
     SwerveDriveKinematics.normalizeWheelSpeeds(swerveModuleStates, kMaxSpeed);
-    m_frontLeft.setDesiredState(swerveModuleStates[0]);
-    m_frontRight.setDesiredState(swerveModuleStates[1]);
-    m_backLeft.setDesiredState(swerveModuleStates[2]);
-    m_backRight.setDesiredState(swerveModuleStates[3]);
+    // m_frontLeft.setDesiredState(swerveModuleStates[0]);
+    // m_frontRight.setDesiredState(swerveModuleStates[1]);
+    // m_backLeft.setDesiredState(swerveModuleStates[2]);
+    // m_backRight.setDesiredState(swerveModuleStates[3]);
   }
 
   /**
