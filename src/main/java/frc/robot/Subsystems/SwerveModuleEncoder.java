@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot;
+package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PWMVictorSPX;
@@ -15,8 +15,9 @@ import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
-
-public class SwerveModule {
+import com.ctre.phoenix.sensors.CANCoder;
+// THIS USES ENCODER CLASS
+public class SwerveModuleEncoder {
   private static final double kWheelRadius = 0.0508;
   private static final int kEncoderResolution = 4096;
 
@@ -24,11 +25,13 @@ public class SwerveModule {
   private static final double kModuleMaxAngularAcceleration
       = 2 * Math.PI; // radians per second squared
 
-  private final SpeedController m_driveMotor;
-  private final SpeedController m_turningMotor;
+  // private final SpeedController m_driveMotor;
+  // private final SpeedController m_turningMotor;
 
-  private final Encoder m_driveEncoder = new Encoder(0, 1);
-  private final Encoder m_turningEncoder = new Encoder(2, 3);
+  private final CANEncoder m1_Encoder = new CANEncoder(Constants.frontLeftEncoder);
+  private final CANEncoder m2_Encoder = new CANEncoder(Constants.frontRightEncoder);
+  private final CANEncoder m3_Encoder = new CANEncoder(Constants.backRightEncoder);
+  private final CANEncoder m4_Encoder = new CANEncoder(Constants.backLeftEncoder);
 
   private final PIDController m_drivePIDController = new PIDController(1, 0, 0);
 
@@ -49,7 +52,7 @@ public class SwerveModule {
     // Set the distance per pulse for the drive encoder. We can simply use the
     // distance traveled for one rotation of the wheel divided by the encoder
     // resolution.
-    // m_driveEncoder.setDistancePerPulse(2 * Math.PI * kWheelRadius / kEncoderResolution);
+    m_driveEncoder.setDistancePerPulse(2 * Math.PI * kWheelRadius / kEncoderResolution);
 
     // Set the distance (in this case, angle) per pulse for the turning encoder.
     // This is the the angle through an entire rotation (2 * wpi::math::pi)
@@ -87,6 +90,6 @@ public class SwerveModule {
 
     // Calculate the turning motor output from the turning PID controller.
     m_driveMotor.set(driveOutput);
-    m_turningMotor.set(turnOutput);
+    m_turningMotortr.set(turnOutput);
   }
 }
