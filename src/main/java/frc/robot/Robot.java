@@ -10,11 +10,11 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.SwerveDriveSubsystem;
 
 public class Robot extends TimedRobot {
   private final XboxController m_controller = new XboxController(0);
-  private final Drivetrain m_swerve = new Drivetrain();
+  private final SwerveDriveSubsystem m_swerve = new SwerveDriveSubsystem();
 
   @Override
   public void autonomousPeriodic() {
@@ -27,22 +27,34 @@ public class Robot extends TimedRobot {
     driveWithJoystick(true);
   }
 
-  private void driveWithJoystick(boolean fieldRelative) {
+  public void driveWithJoystick(boolean fieldRelative) {
     // Get the x speed. We are inverting this because Xbox controllers return
     // negative values when we push forward.
-    final double xSpeed = -m_controller.getY(GenericHID.Hand.kLeft) * Drivetrain.kMaxSpeed;
+    final double xSpeed = -m_controller.getY(GenericHID.Hand.kLeft) * SwerveDriveSubsystem.kMaxSpeed;
 
     // Get the y speed or sideways/strafe speed. We are inverting this because
     // we want a positive value when we pull to the left. Xbox controllers
     // return positive values when you pull to the right by default.
-    final double ySpeed = -m_controller.getX(GenericHID.Hand.kLeft) * Drivetrain.kMaxSpeed;
+    final double ySpeed = -m_controller.getX(GenericHID.Hand.kLeft) * SwerveDriveSubsystem.kMaxSpeed;
 
     // Get the rate of angular rotation. We are inverting this because we want a
     // positive value when we pull to the left (remember, CCW is positive in
     // mathematics). Xbox controllers return positive values when you pull to
     // the right by default.
-    final double rot = -m_controller.getX(GenericHID.Hand.kRight) * Drivetrain.kMaxAngularSpeed;
+    final double rot = -m_controller.getX(GenericHID.Hand.kRight) * SwerveDriveSubsystem.kMaxAngularSpeed;
 
-    m_swerve.drive(xSpeed, ySpeed, rot, fieldRelative);
+    m_swerve.holonomicDrive(xSpeed, ySpeed, rot);
+  }
+  @Override
+  public void robotInit() {
+
+  }
+  @Override
+  public void teleopInit(){
+
+  }
+  @Override
+  public void disabledInit(){
+
   }
 }

@@ -18,7 +18,7 @@ import frc.robot.Constants;
 /**
  * Represents a swerve drive style drivetrain.
  */
-public class Drivetrain extends SubsystemBase {
+public class SwerveDriveSubsystem extends SubsystemBase {
   public static final double kMaxSpeed = 3.0; // 3 meters per second
   public static final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second
 
@@ -40,7 +40,7 @@ public class Drivetrain extends SubsystemBase {
 
   private final SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(m_kinematics, getAngle());
 
-  public Drivetrain() {
+  public SwerveDriveSubsystem() {
     m_gyro.reset();
   }
 

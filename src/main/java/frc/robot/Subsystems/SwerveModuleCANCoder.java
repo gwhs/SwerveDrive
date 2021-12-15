@@ -19,7 +19,7 @@ public class SwerveModuleCANCoder extends SubsystemBase{
     private static final double kWheelRadius = 0.0508;
     private static final int kEncoderResolution = 4096;
 
-    private static final double kModuleMaxAngularVelocity = Drivetrain.kMaxAngularSpeed;
+    private static final double kModuleMaxAngularVelocity = SwerveDriveSubsystem.kMaxAngularSpeed;
     private static final double kModuleMaxAngularAcceleration
         = 2 * Math.PI; // radians per second squared
     private final CANCoder m1_Encoder = new CANCoder(Constants.frontLeftEncoder);
@@ -56,6 +56,7 @@ public class SwerveModuleCANCoder extends SubsystemBase{
         m_turn.setSensorPhase(true);
         m_turn.configAllSettings(config);
 
+
 //     //     m_turningEncoder.setDistancePerPulse(2 * Math.PI / kEncoderResolution);
 //     //     m_turningPIDController.enableContinuousInput(-Math.PI, Math.PI);
 //      }
@@ -78,10 +79,26 @@ public class SwerveModuleCANCoder extends SubsystemBase{
      public void setDriveSpeed(double speed) {
          m_drive.set(ControlMode.PercentOutput, speed);
      }
-     public void setPIDSlot(final int slot) {
-         m_drive.selectProfileSlot(slot, 0);
-     }
-     public void setDrivePIDSlot(final int slot){
-         m_turn.selectProfileSlot(slot, 0);
-     }
+    //  public void setPIDSlot(final int slot) {
+    //      m_drive.selectProfileSlot(slot, 0);
+    //  }
+    //  public void swapPIDSlot(int slot){
+    //     for(int i = 0; i < 4; i++)
+    //        {
+    //         [i].setPIDSlot(slot);
+    //         mSwerveModules[i].setPIDSlot(slot);
+    //         mSwerveModules[i].setPIDSlot(slot);
+    //         mSwerveModules[i].setPIDSlot(slot);
+    //        }
+    // }
+    //  public void setDrivePIDSlot(final int slot){
+    //      m_turn.selectProfileSlot(slot, 0);
+    //  }
+     
+    //  public void swapDrivePIDSlot(int slot){
+    //      for(int i = 0; i < 4; i++)
+    //      {
+    //          mSwerveModules[i].setDrivePIDSlot(slot);
+    //      }
+    //  }
 }
