@@ -30,17 +30,6 @@ public class SwerveDriveCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // double forward = mXbox.getY(Hand.kLeft); //real: positive
-		// double rotation = mXbox.getTriggerAxis(Hand.kLeft) 
-		// 	- mXbox.getTriggerAxis(Hand.kRight); //trigger values are between 0 and 1, left is -1 and right is +1
-		// double strafe = mXbox.getX(Hand.kLeft); //real: pos
-
-		// forward = MathUtils.deadband(forward, 0.175);
-		// strafe = MathUtils.deadband(strafe, 0.175);
-		// rotation = MathUtils.deadband(rotation, 0.1);
-
-    // mDrivetrain.holonomicDrive(forward, -strafe, rotation);
-    // mRobot.driveWithJoystick(true);
   }
 
   // Called once the command ends or is interrupted.
