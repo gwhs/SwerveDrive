@@ -8,15 +8,16 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import frc.robot.MathUtils;
 
 public class DrivetrainCommand extends CommandBase {
   /** Creates a new DrivetrainCommand. */
-  private Drivetrain m_subsystem;
-  private XboxController m_xbox;
+  private Drivetrain mDrivetrain;
+  private XboxController mXbox;
   public DrivetrainCommand(Drivetrain subsystem, XboxController xbox) {
     // Use addRequirements() here to declare subsystem dependencies.
-    m_subsystem = subsystem;
-		this.m_xbox = xbox;
+    this.mDrivetrain = subsystem;
+		this.mXbox = xbox;
     addRequirements(subsystem);
   }
 
@@ -27,7 +28,16 @@ public class DrivetrainCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double strafe = mXboxController.getX(Hand.kLeft); //real: pos
+    double forward = mXbox.getY(Hand.kLeft); //real: positive
+		double rotation = mXbox.getTriggerAxis(Hand.kLeft) 
+			- mXbox.getTriggerAxis(Hand.kRight); //trigger values are between 0 and 1, left is -1 and right is +1
+		double strafe = mXbox.getX(Hand.kLeft); //real: pos
+
+		forward = MathUtils.deadband(forward, 0.175);
+		strafe = MathUtils.deadband(strafe, 0.175);
+		rotation = MathUtils.deadband(rotation, 0.1);
+
+		mDrivetrain.holonomicDrive(forward, -strafe, rotation);
   }
 
   // Called once the command ends or is interrupted.

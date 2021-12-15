@@ -76,16 +76,30 @@ public class Drivetrain extends SubsystemBase {
     // m_backRight.setDesiredState(swerveModuleStates[3]);
   }
 
+  public void stopDriveMotors() {
+    m_frontLeft.setDriveSpeed(0);
+    m_frontRight.setDriveSpeed(0);
+    m_backRight.setDriveSpeed(0);
+    m_backLeft.setDriveSpeed(0);
+  }
+
+  public void holonomicDrive(double forward, double strafe, double rotation) {
+    m_frontLeft.setDriveSpeed(strafe);
+    m_frontRight.setDriveSpeed(strafe);
+    m_backRight.setDriveSpeed(strafe);
+    m_backLeft.setDriveSpeed(strafe);
+  }
+
   /**
    * Updates the field relative position of the robot.
    */
   public void updateOdometry() {
     m_odometry.update(
-        getAngle(),
-        m_frontLeft.getState(),
-        m_frontRight.getState(),
-        m_backLeft.getState(),
-        m_backRight.getState()
+        getAngle() //,
+        // m_frontLeft.getState(),
+        // m_frontRight.getState(),
+        // m_backLeft.getState(),
+        // m_backRight.getState()
     );
   }
 }
