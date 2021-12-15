@@ -1,26 +1,31 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.sensors.CANCoder;
-import edu.wpi.first.wpilibj.controller.PIDController;
-import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.motorcontrol.can.BaseTalonConfiguration;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.PWMTalonFX;
 
 
 
-public class SwerveModuleCANCoder{
+
+public class SwerveModuleCANCoder extends SubsystemBase{
     private static final double kWheelRadius = 0.0508;
     private static final int kEncoderResolution = 4096;
 
     private static final double kModuleMaxAngularVelocity = Drivetrain.kMaxAngularSpeed;
     private static final double kModuleMaxAngularAcceleration
         = 2 * Math.PI; // radians per second squared
-    private final CANEncoder m1_Encoder = new CANEncoder(Constants.frontLeftEncoder);
-    private final CANEncoder m2_Encoder = new CANEncoder(Constants.frontRightEncoder);
-    private final CANEncoder m3_Encoder = new CANEncoder(Constants.backRightEncoder);
-    private final CANEncoder m4_Encoder = new CANEncoder(Constants.backLeftEncoder);
+    private final CANCoder m1_Encoder = new CANCoder(Constants.frontLeftEncoder);
+    private final CANCoder m2_Encoder = new CANCoder(Constants.frontRightEncoder);
+    private final CANCoder m3_Encoder = new CANCoder(Constants.backRightEncoder);
+    private final CANCoder m4_Encoder = new CANCoder(Constants.backLeftEncoder);
+    private TalonFX m_drive;
+    private TalonFX m_turn;
+    private TalonFXConfiguration config = new TalonFXConfiguration();
+
 
     //private final PIDController m_drivePIDController = new PIDController(1, 3, 5, 7);
 
@@ -29,21 +34,39 @@ public class SwerveModuleCANCoder{
     // new TrapezoidProfile.Constraints(kModuleMaxAngularVelocity, kModuleMaxAngularAcceleration));
     
 
-    // public SwerveModuleCANCoder(int driveMotor, int turnMotor) {
+     public SwerveModuleCANCoder(int driveMotor, int turnMotor) {
+        TalonFXConfiguration config = new TalonFXConfiguration();
+        config.remoteFilter0.remoteSensorDeviceID = _canifier.getDeviceID();
+        config.remoteFilter0.remoteSensorSource = RemoteSensorSource.CANifier_PWMInput1;
+        config.primaryPID.selectedFeedbackSensor = FeedbackDevice.RemoteSensor0;
 
-    //     m_turningEncoder.setDistancePerPulse(2 * Math.PI / kEncoderResolution);
-    //     m_turningPIDController.enableContinuousInput(-Math.PI, Math.PI);
-    // }
-    // public SwerveModuleState getState() {
-    //     return new SwerveModuleState(m_driveEncoder.getRate(), new Rotation2d(m_turningEncoder.get()));
-    //   }
-    // public void setDesiredState(SwerveModuleState state) {
-    //     // Calculate the drive output from the drive PID controller.
-    //     final var driveOutput = m_drivePIDController.calculate(
-    //         m_driveEncoder.getRate(), state.speedMetersPerSecond);
+         m_drive = new TalonFX(driveMotor);
+         m_turn = new TalonFX(turnMotor);
+        m_drive.configFactoryDefault();
+        m_drive.setInverted(true);
+        m_drive.setSensorPhase(true);
+        m_drive.configAllSettings(config);
+
+        m_turn.configFactoryDefault();
+        m_turn.setInverted(true);
+        m_turn.setSensorPhase(true);
+        m_turn.configAllSettings(config);
+
+//     //     m_turningEncoder.setDistancePerPulse(2 * Math.PI / kEncoderResolution);
+//     //     m_turningPIDController.enableContinuousInput(-Math.PI, Math.PI);
+//      }
+//      public SwerveModuleState getState() {
+//         return new SwerveModuleState(m_driveEncoder.getRate(), new Rotation2d(m_turningEncoder.get()));
+//      }
+//     public void setDesiredState(SwerveModuleState state) {
+//        // Calculate the drive output from the drive PID controller.
+//        final var driveOutput = m_drivePIDController.calculate(
+//         m_driveEncoder.getRate(), state.speedMetersPerSecond);
     
-    //     // Calculate the turning motor output from the turning PID controller.
-    //     final var turnOutput = m_turningPIDController.calculate(
-    //         m_turningEncoder.get(), state.angle.getRadians()
-    //     );
-}
+//     //     // Calculate the turning motor output from the turning PID controller.
+//     //    final var turnOutput = m_turningPIDController.calculate(
+//     //    m_turningEncoder.get(), state.angle.getRadians()
+//     //  );
+//     }
+// }
+     }}

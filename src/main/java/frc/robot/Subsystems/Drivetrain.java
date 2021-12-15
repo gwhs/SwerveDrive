@@ -12,12 +12,13 @@ import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveOdometry;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 /**
  * Represents a swerve drive style drivetrain.
  */
-public class Drivetrain {
+public class Drivetrain extends SubsystemBase {
   public static final double kMaxSpeed = 3.0; // 3 meters per second
   public static final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second
 
@@ -26,10 +27,10 @@ public class Drivetrain {
   private final Translation2d m_backLeftLocation = new Translation2d(-0.381, 0.381);
   private final Translation2d m_backRightLocation = new Translation2d(-0.381, -0.381);
 
-  private final SwerveModule m_frontLeft = new SwerveModule(Constants.frontLeftDrive, Constants.frontLeftTurn);
-  private final SwerveModule m_frontRight = new SwerveModule(Constants.frontRightDrive, Constants.frontRightTurn);
-  private final SwerveModule m_backLeft = new SwerveModule(Constants.backLeftDrive, Constants.backLeftTurn);
-  private final SwerveModule m_backRight = new SwerveModule(Constants.backRightDrive, Constants.backRightTurn);
+  private final SwerveModuleCANCoder m_frontLeft = new SwerveModuleCANCoder(Constants.frontLeftDrive, Constants.frontLeftTurn);
+  private final SwerveModuleCANCoder m_frontRight = new SwerveModuleCANCoder(Constants.frontRightDrive, Constants.frontRightTurn);
+  private final SwerveModuleCANCoder m_backLeft = new SwerveModuleCANCoder(Constants.backLeftDrive, Constants.backLeftTurn);
+  private final SwerveModuleCANCoder m_backRight = new SwerveModuleCANCoder(Constants.backRightDrive, Constants.backRightTurn);
 
   private final AnalogGyro m_gyro = new AnalogGyro(0);
 
