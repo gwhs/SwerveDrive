@@ -19,7 +19,7 @@ import frc.robot.Constants;
  * Represents a swerve drive style drivetrain.
  */
 public class SwerveDriveSubsystem extends SubsystemBase {
-  public static final double kMaxSpeed = 1.0; // 3 meters per second
+  public static final double kMaxSpeed = 0.5; // 3 meters per second
   public static final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second
 
   private final Translation2d m_frontLeftLocation = new Translation2d(0.381, 0.381);
@@ -27,10 +27,10 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   private final Translation2d m_backLeftLocation = new Translation2d(-0.381, 0.381);
   private final Translation2d m_backRightLocation = new Translation2d(-0.381, -0.381);
 
-  private final SwerveModuleCANCoder m_frontLeft = new SwerveModuleCANCoder(Constants.frontLeftDrive, Constants.frontLeftTurn);
-  private final SwerveModuleCANCoder m_frontRight = new SwerveModuleCANCoder(Constants.frontRightDrive, Constants.frontRightTurn);
-  private final SwerveModuleCANCoder m_backLeft = new SwerveModuleCANCoder(Constants.backLeftDrive, Constants.backLeftTurn);
-  private final SwerveModuleCANCoder m_backRight = new SwerveModuleCANCoder(Constants.backRightDrive, Constants.backRightTurn);
+  private final SwerveModuleCANCoder m_frontLeft = new SwerveModuleCANCoder(Constants.frontLeftDrive, Constants.frontLeftTurn, 0);
+  private final SwerveModuleCANCoder m_frontRight = new SwerveModuleCANCoder(Constants.frontRightDrive, Constants.frontRightTurn, 0);
+  private final SwerveModuleCANCoder m_backLeft = new SwerveModuleCANCoder(Constants.backLeftDrive, Constants.backLeftTurn, 0);
+  private final SwerveModuleCANCoder m_backRight = new SwerveModuleCANCoder(Constants.backRightDrive, Constants.backRightTurn, 0);
 
   private final AnalogGyro m_gyro = new AnalogGyro(0);
 
@@ -84,10 +84,44 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   }
 
   public void holonomicDrive(double forward, double strafe, double rotation) {
-    m_frontLeft.setDriveSpeed(strafe);
-    m_frontRight.setDriveSpeed(strafe);
-    m_backRight.setDriveSpeed(strafe);
-    m_backLeft.setDriveSpeed(strafe);
+    m_frontLeft.setDriveSpeed(forward);
+    m_frontRight.setDriveSpeed(forward);
+    m_backRight.setDriveSpeed(forward);
+    m_backLeft.setDriveSpeed(forward);
+
+    m_frontLeft.setTurnSpeed(rotation);
+    m_frontRight.setTurnSpeed(rotation);
+    m_backRight.setTurnSpeed(rotation);
+    m_backLeft.setTurnSpeed(rotation);
+  }
+  
+  public void m1holonomicDrive(double forward, double strafe, double rotation) {
+    m_frontLeft.setDriveSpeed(forward);
+    m_frontLeft.setTurnSpeed(rotation);
+  }
+  public void m2holonomicDrive(double forward, double strafe, double rotation) {
+    m_frontRight.setDriveSpeed(forward);
+    m_frontRight.setTurnSpeed(rotation);
+  }
+
+  public void m2Align(double angle){
+    m_frontRight.goToPosition(angle);
+  } 
+
+   public void m3holonomicDrive(double forward, double strafe, double rotation) {
+    m_backRight.setDriveSpeed(forward);
+    m_backRight.setTurnSpeed(rotation);
+  }
+  public void m4holonomicDrive(double forward, double strafe, double rotation) {
+    m_backLeft.setDriveSpeed(forward);
+    m_frontLeft.setTurnSpeed(rotation);
+  }
+
+  public void alignWheels() {
+    m_frontLeft.goToPosition(m_frontLeft.getOffsetAngle());
+    m_frontRight.goToPosition(m_frontRight.getOffsetAngle());
+    m_backRight.goToPosition(m_backRight.getOffsetAngle());
+    m_backLeft.goToPosition(m_backLeft.getOffsetAngle());
   }
 
   /**

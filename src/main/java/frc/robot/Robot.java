@@ -46,13 +46,29 @@ public class Robot extends TimedRobot {
 
 		xSpeed = MathUtils.deadband(xSpeed, 0.175);
 		ySpeed = MathUtils.deadband(ySpeed, 0.175);
-		rot = MathUtils.deadband(rot, 0.1);
+		rot = MathUtils.deadband(rot, 0.175);
     
-    m_swerve.holonomicDrive(xSpeed, ySpeed, rot);
+    int mod = 3;
+    if(mod == 0) {
+      m_swerve.holonomicDrive(xSpeed, ySpeed, rot);
+    }
+    else if(mod == 1){
+      m_swerve.m1holonomicDrive(xSpeed, ySpeed, rot);
+    }
+    else if(mod == 2) {
+      m_swerve.m2holonomicDrive(xSpeed, ySpeed, rot);
+    }
+    else if(mod == 3) {
+      m_swerve.m3holonomicDrive(xSpeed, ySpeed, rot);
+    }
+    else {
+      m_swerve.m4holonomicDrive(xSpeed, ySpeed, rot);
+    }
+    
   }
   @Override
   public void robotInit() {
-
+    m_swerve.m2Align(15.0);
   }
   @Override
   public void teleopInit(){

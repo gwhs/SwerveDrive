@@ -29,7 +29,7 @@ public class SwerveModuleCANCoder extends SubsystemBase{
     private TalonFX m_drive;
     private TalonFX m_turn;
     private TalonFXConfiguration config = new TalonFXConfiguration();
-
+    private double mZeroOffSet;
 
     //private final PIDController m_drivePIDController = new PIDController(1, 3, 5, 7);
 
@@ -38,7 +38,7 @@ public class SwerveModuleCANCoder extends SubsystemBase{
     // new TrapezoidProfile.Constraints(kModuleMaxAngularVelocity, kModuleMaxAngularAcceleration));
     
 
-     public SwerveModuleCANCoder(int driveMotor, int turnMotor) {
+     public SwerveModuleCANCoder(int driveMotor, int turnMotor, double zeroOffSet) {
         TalonFXConfiguration config = new TalonFXConfiguration();
         // config.remoteFilter0.remoteSensorDeviceID = _canifier.getDeviceID();
         // config.remoteFilter0.remoteSensorSource = RemoteSensorSource.CANifier_PWMInput1;
@@ -55,7 +55,8 @@ public class SwerveModuleCANCoder extends SubsystemBase{
         m_turn.setInverted(true);
         m_turn.setSensorPhase(true);
         m_turn.configAllSettings(config);
-
+        
+        mZeroOffSet = zeroOffSet;
 
 //     //     m_turningEncoder.setDistancePerPulse(2 * Math.PI / kEncoderResolution);
 //     //     m_turningPIDController.enableContinuousInput(-Math.PI, Math.PI);
@@ -75,9 +76,21 @@ public class SwerveModuleCANCoder extends SubsystemBase{
 //     }
 // }
      }
+
+     public double getOffsetAngle() {
+         return mZeroOffSet;
+     }
     
      public void setDriveSpeed(double speed) {
          m_drive.set(ControlMode.PercentOutput, speed);
+     }
+
+     public void setTurnSpeed(double speed) {
+         m_turn.set(ControlMode.PercentOutput, speed);
+     }
+
+     public void goToPosition(double position) {
+         m_turn.set(ControlMode.Position, position);
      }
     //  public void setPIDSlot(final int slot) {
     //      m_drive.selectProfileSlot(slot, 0);
