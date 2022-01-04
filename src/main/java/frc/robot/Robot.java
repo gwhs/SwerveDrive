@@ -44,11 +44,11 @@ public class Robot extends TimedRobot {
     double rot = -m_controller.getX(GenericHID.Hand.kRight) * SwerveDriveSubsystem.kMaxAngularSpeed;
 
 
-		xSpeed = MathUtils.deadband(xSpeed, 0.175);
-		ySpeed = MathUtils.deadband(ySpeed, 0.175);
-		rot = MathUtils.deadband(rot, 0.175);
+		xSpeed = MathUtils.deadband(xSpeed, 0.15);
+		ySpeed = MathUtils.deadband(ySpeed, 0.15);
+		rot = MathUtils.deadband(rot, 0.25);
     
-    int mod = 3;
+    int mod = 1;
     if(mod == 0) {
       m_swerve.holonomicDrive(xSpeed, ySpeed, rot);
     }

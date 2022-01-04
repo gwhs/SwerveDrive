@@ -18,6 +18,8 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 public class SwerveModuleCANCoder extends SubsystemBase{
     private static final double kWheelRadius = 0.0508;
     private static final int kEncoderResolution = 4096;
+    private static final double WHEELBASE = 18.625;
+    private static final double TRACKWIDTH = 18.5;
 
     private static final double kModuleMaxAngularVelocity = SwerveDriveSubsystem.kMaxAngularSpeed;
     private static final double kModuleMaxAngularAcceleration
@@ -83,6 +85,53 @@ public class SwerveModuleCANCoder extends SubsystemBase{
     
      public void setDriveSpeed(double speed) {
          m_drive.set(ControlMode.PercentOutput, speed);
+     }
+
+     public void setStrafe(double strafe, double rotation) {
+        
+        double a = strafe - rotation * (WHEELBASE / TRACKWIDTH);
+		double b = strafe + rotation * (WHEELBASE / TRACKWIDTH);
+		double c = forward - rotation * (TRACKWIDTH / WHEELBASE);
+		double d = forward + rotation * (TRACKWIDTH / WHEELBASE);
+
+		double[] angles = new double[]{
+				Math.atan2(b, c) * 180 / Math.PI,
+				Math.atan2(b, d) * 180 / Math.PI,
+				Math.atan2(a, d) * 180 / Math.PI,
+				Math.atan2(a, c) * 180 / Math.PI
+		};
+
+		double[] speeds = new double[]{
+				Math.sqrt(b * b + c * c),
+				Math.sqrt(b * b + d * d),
+				Math.sqrt(a * a + d * d),
+				Math.sqrt(a * a + c * c)
+		};
+
+		// SmartDashboard.putNumber("Module 0 Ticks", mSwerveModules[0].getPosition());
+		// SmartDashboard.putNumber("Module 1 Ticks", mSwerveModules[1].getPosition());
+		// SmartDashboard.putNumber("Module 2 Ticks", mSwerveModules[2].getPosition());
+		// SmartDashboard.putNumber("Module 3 Ticks", mSwerveModules[3].getPosition());
+		SmartDashboard.putNumber("Module 3 get current angle", mSwerveModules[3].getCurrentAngle());
+
+		double max = speeds[0];  //remove?
+
+		for (double speed : speeds) {  //regular for loop is preferred here, do we use max anywhere?  -- JMH
+			if (speed > max) {
+				max = speed;
+			}
+		}
+
+		for (int i = 0; i < 4; i++) {
+			if (Math.abs(forward) > 0.05 ||
+			    Math.abs(strafe) > 0.05 ||
+			    Math.abs(rotation) > 0.05) {
+				mSwerveModules[i].setTargetAngle(angles[i] + 180, isAuto);
+			} else {
+				mSwerveModules[i].setTargetAngle(mSwerveModules[i].getTargetAngle(), isAuto);
+			}
+            mSwerveModules[i].setTargetSpeed(speeds[i]);
+        }
      }
 
      public void setTurnSpeed(double speed) {
