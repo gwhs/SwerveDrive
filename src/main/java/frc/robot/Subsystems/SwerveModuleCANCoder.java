@@ -18,20 +18,17 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 public class SwerveModuleCANCoder extends SubsystemBase{
     private static final double kWheelRadius = 0.0508;
     private static final int kEncoderResolution = 4096;
-    private static final double WHEELBASE = 18.625;
-    private static final double TRACKWIDTH = 18.5;
+
 
     private static final double kModuleMaxAngularVelocity = SwerveDriveSubsystem.kMaxAngularSpeed;
     private static final double kModuleMaxAngularAcceleration
         = 2 * Math.PI; // radians per second squared
-    private final CANCoder m1_Encoder = new CANCoder(Constants.frontLeftEncoder);
-    private final CANCoder m2_Encoder = new CANCoder(Constants.frontRightEncoder);
-    private final CANCoder m3_Encoder = new CANCoder(Constants.backRightEncoder);
-    private final CANCoder m4_Encoder = new CANCoder(Constants.backLeftEncoder);
+    private CANCoder m_Encoder;
     private TalonFX m_drive;
     private TalonFX m_turn;
     private TalonFXConfiguration config = new TalonFXConfiguration();
     private double mZeroOffSet;
+    private double mLastTargetAngle = 0;
 
     //private final PIDController m_drivePIDController = new PIDController(1, 3, 5, 7);
 
@@ -40,12 +37,13 @@ public class SwerveModuleCANCoder extends SubsystemBase{
     // new TrapezoidProfile.Constraints(kModuleMaxAngularVelocity, kModuleMaxAngularAcceleration));
     
 
-     public SwerveModuleCANCoder(int driveMotor, int turnMotor, double zeroOffSet) {
+     public SwerveModuleCANCoder(int driveMotor, int turnMotor, double zeroOffSet, int encoderDeviceNum) {
         TalonFXConfiguration config = new TalonFXConfiguration();
         // config.remoteFilter0.remoteSensorDeviceID = _canifier.getDeviceID();
         // config.remoteFilter0.remoteSensorSource = RemoteSensorSource.CANifier_PWMInput1;
         // config.primaryPID.selectedFeedbackSensor = FeedbackDevice.RemoteSensor0;
-
+        
+        m_Encoder = new CANCoder(encoderDeviceNum);
          m_drive = new TalonFX(driveMotor);
          m_turn = new TalonFX(turnMotor);
         m_drive.configFactoryDefault();
@@ -87,52 +85,37 @@ public class SwerveModuleCANCoder extends SubsystemBase{
          m_drive.set(ControlMode.PercentOutput, speed);
      }
 
-     public void setStrafe(double strafe, double rotation) {
-        
-        double a = strafe - rotation * (WHEELBASE / TRACKWIDTH);
-		double b = strafe + rotation * (WHEELBASE / TRACKWIDTH);
-		double c = forward - rotation * (TRACKWIDTH / WHEELBASE);
-		double d = forward + rotation * (TRACKWIDTH / WHEELBASE);
-
-		double[] angles = new double[]{
-				Math.atan2(b, c) * 180 / Math.PI,
-				Math.atan2(b, d) * 180 / Math.PI,
-				Math.atan2(a, d) * 180 / Math.PI,
-				Math.atan2(a, c) * 180 / Math.PI
-		};
-
-		double[] speeds = new double[]{
-				Math.sqrt(b * b + c * c),
-				Math.sqrt(b * b + d * d),
-				Math.sqrt(a * a + d * d),
-				Math.sqrt(a * a + c * c)
-		};
-
-		// SmartDashboard.putNumber("Module 0 Ticks", mSwerveModules[0].getPosition());
-		// SmartDashboard.putNumber("Module 1 Ticks", mSwerveModules[1].getPosition());
-		// SmartDashboard.putNumber("Module 2 Ticks", mSwerveModules[2].getPosition());
-		// SmartDashboard.putNumber("Module 3 Ticks", mSwerveModules[3].getPosition());
-		SmartDashboard.putNumber("Module 3 get current angle", mSwerveModules[3].getCurrentAngle());
-
-		double max = speeds[0];  //remove?
-
-		for (double speed : speeds) {  //regular for loop is preferred here, do we use max anywhere?  -- JMH
-			if (speed > max) {
-				max = speed;
-			}
-		}
-
-		for (int i = 0; i < 4; i++) {
-			if (Math.abs(forward) > 0.05 ||
-			    Math.abs(strafe) > 0.05 ||
-			    Math.abs(rotation) > 0.05) {
-				mSwerveModules[i].setTargetAngle(angles[i] + 180, isAuto);
-			} else {
-				mSwerveModules[i].setTargetAngle(mSwerveModules[i].getTargetAngle(), isAuto);
-			}
-            mSwerveModules[i].setTargetSpeed(speeds[i]);
-        }
+     public double getTargetAngle() {
+         return mLastTargetAngle;
      }
+
+     public void setTargetAngle(double targetAngle) {
+         mLastTargetAngle = targetAngle;
+         targetAngle %= 360;
+         final double currentAngle = m_Encoder.getPosition() * (360.0 / 1024.0);
+    
+         double currentAngleMod = currentAngle % 360;
+         double delta = currentAngleMod - targetAngle;
+        if (delta > 180) {
+            targetAngle += 360;
+        }
+        else if (delta < -180) {
+            targetAngle -= 360;
+        }
+        delta = currentAngleMod - targetAngle;
+        if (delta > 90 || delta < -90) {
+            if (delta > 90) { 
+                targetAngle += 180;
+            }
+            else if (delta < -90); {
+                targetAngle -= 180;
+            }
+            m_drive.setInverted(true);
+        }
+        targetAngle += currentAngle - currentAngleMod;
+        targetAngle *= 1024.0 / 360.0;
+        m_turn.set(ControlMode.Position, targetAngle);
+        }
 
      public void setTurnSpeed(double speed) {
          m_turn.set(ControlMode.PercentOutput, speed);

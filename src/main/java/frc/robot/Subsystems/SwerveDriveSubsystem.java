@@ -21,16 +21,18 @@ import frc.robot.Constants;
 public class SwerveDriveSubsystem extends SubsystemBase {
   public static final double kMaxSpeed = 0.5; // 3 meters per second
   public static final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second
+  private static final double WHEELBASE = 18.625;
+  private static final double TRACKWIDTH = 18.5;
 
   private final Translation2d m_frontLeftLocation = new Translation2d(0.381, 0.381);
   private final Translation2d m_frontRightLocation = new Translation2d(0.381, -0.381);
   private final Translation2d m_backLeftLocation = new Translation2d(-0.381, 0.381);
   private final Translation2d m_backRightLocation = new Translation2d(-0.381, -0.381);
 
-  private final SwerveModuleCANCoder m_frontLeft = new SwerveModuleCANCoder(Constants.frontLeftDrive, Constants.frontLeftTurn, 0);
-  private final SwerveModuleCANCoder m_frontRight = new SwerveModuleCANCoder(Constants.frontRightDrive, Constants.frontRightTurn, 0);
-  private final SwerveModuleCANCoder m_backLeft = new SwerveModuleCANCoder(Constants.backLeftDrive, Constants.backLeftTurn, 0);
-  private final SwerveModuleCANCoder m_backRight = new SwerveModuleCANCoder(Constants.backRightDrive, Constants.backRightTurn, 0);
+  private final SwerveModuleCANCoder m_frontLeft = new SwerveModuleCANCoder(Constants.frontLeftDrive, Constants.frontLeftTurn, 0, Constants.frontLeftEncoder);
+  private final SwerveModuleCANCoder m_frontRight = new SwerveModuleCANCoder(Constants.frontRightDrive, Constants.frontRightTurn, 0, Constants.frontRightEncoder);
+  private final SwerveModuleCANCoder m_backLeft = new SwerveModuleCANCoder(Constants.backLeftDrive, Constants.backLeftTurn, 0, Constants.backLeftEncoder);
+  private final SwerveModuleCANCoder m_backRight = new SwerveModuleCANCoder(Constants.backRightDrive, Constants.backRightTurn, 0, Constants.backRightEncoder);
 
   private final AnalogGyro m_gyro = new AnalogGyro(0);
 
@@ -116,6 +118,48 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     m_backLeft.setDriveSpeed(forward);
     m_frontLeft.setTurnSpeed(rotation);
   }
+
+  public void setStrafe(double forward, double strafe, double rotation) {
+        
+    double a = strafe - rotation * (WHEELBASE / TRACKWIDTH);
+    double b = strafe + rotation * (WHEELBASE / TRACKWIDTH);
+    double c = forward - rotation * (TRACKWIDTH / WHEELBASE);
+    double d = forward + rotation * (TRACKWIDTH / WHEELBASE);
+
+    double[] angles = new double[]{
+      Math.atan2(b, c) * 180 / Math.PI,
+      Math.atan2(b, d) * 180 / Math.PI,
+      Math.atan2(a, d) * 180 / Math.PI,
+      Math.atan2(a, c) * 180 / Math.PI
+    };
+
+    double[] speeds = new double[]{
+      Math.sqrt(b * b + c * c),
+      Math.sqrt(b * b + d * d),
+      Math.sqrt(a * a + d * d),
+      Math.sqrt(a * a + c * c)
+    };
+
+    // SmartDashboard.putNumber("Module 0 Ticks", mSwerveModules[0].getPosition());
+    // SmartDashboard.putNumber("Module 1 Ticks", mSwerveModules[1].getPosition());
+    // SmartDashboard.putNumber("Module 2 Ticks", mSwerveModules[2].getPosition());
+    // SmartDashboard.putNumber("Module 3 Ticks", mSwerveModules[3].getPosition());
+    // SmartDashboard.putNumber("Module 3 get current angle", mSwerveModules[3].getCurrentAngle());
+
+
+    SwerveModuleCANCoder[] modules = { m_frontLeft, m_frontRight, m_backRight, m_backLeft};
+    for (int i = 0; i < 4; i++) {
+      if (Math.abs(forward) > 0.05 ||
+        Math.abs(strafe) > 0.05 ||
+        Math.abs(rotation) > 0.05) {
+        modules[i].setTargetAngle(angles[i] + 180);
+      } 
+      else {
+        modules[i].setTargetAngle(modules[i].getTargetAngle());
+      }
+        modules[i].setDriveSpeed(speeds[i]);
+    }
+ }
 
   public void alignWheels() {
     m_frontLeft.goToPosition(m_frontLeft.getOffsetAngle());
