@@ -122,6 +122,7 @@ public class SwerveModuleCANCoder extends SubsystemBase{
      }
 
      public void goToPosition(double position) {
+         System.out.println(position);
          m_turn.set(ControlMode.Position, position);
      }
     //  public void setPIDSlot(final int slot) {
@@ -136,9 +137,9 @@ public class SwerveModuleCANCoder extends SubsystemBase{
     //         mSwerveModules[i].setPIDSlot(slot);
     //        }
     // }
-    //  public void setDrivePIDSlot(final int slot){
-    //      m_turn.selectProfileSlot(slot, 0);
-    //  }
+     public void setDrivePIDSlot(final int slot){
+         m_turn.selectProfileSlot(slot, 0);
+     }
      
     //  public void swapDrivePIDSlot(int slot){
     //      for(int i = 0; i < 4; i++)

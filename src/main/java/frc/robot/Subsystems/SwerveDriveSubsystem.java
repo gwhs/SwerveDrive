@@ -19,8 +19,8 @@ import frc.robot.Constants;
  * Represents a swerve drive style drivetrain.
  */
 public class SwerveDriveSubsystem extends SubsystemBase {
-  public static final double kMaxSpeed = 0.5; // 3 meters per second
-  public static final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second
+  public static final double kMaxSpeed = 0.5; // 3 meters per second 0.5
+  public static final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second Math.PI
   private static final double WHEELBASE = 18.625;
   private static final double TRACKWIDTH = 18.5;
 
@@ -86,15 +86,23 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   }
 
   public void holonomicDrive(double forward, double strafe, double rotation) {
-    m_frontLeft.setDriveSpeed(forward);
-    m_frontRight.setDriveSpeed(forward);
-    m_backRight.setDriveSpeed(forward);
-    m_backLeft.setDriveSpeed(forward);
+    // m_frontLeft.setDriveSpeed(forward);
+    // m_frontRight.setDriveSpeed(forward);
+    // m_backRight.setDriveSpeed(forward);
+    // m_backLeft.setDriveSpeed(forward);
 
-    m_frontLeft.setTurnSpeed(rotation);
-    m_frontRight.setTurnSpeed(rotation);
-    m_backRight.setTurnSpeed(rotation);
-    m_backLeft.setTurnSpeed(rotation);
+    // m_frontLeft.setTurnSpeed(rotation);
+    // m_frontRight.setTurnSpeed(rotation);
+    // m_backRight.setTurnSpeed(rotation);
+    // m_backLeft.setTurnSpeed(rotation);
+
+    //  setStrafe(forward, strafe, rotation);
+
+    m_frontLeft.goToPosition(strafe);
+    m_frontRight.goToPosition(strafe);
+    m_backRight.goToPosition(strafe);
+    m_backLeft.goToPosition(strafe);
+
   }
   
   public void m1holonomicDrive(double forward, double strafe, double rotation) {
