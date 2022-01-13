@@ -86,22 +86,23 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   }
 
   public void holonomicDrive(double forward, double strafe, double rotation) {
-    // m_frontLeft.setDriveSpeed(forward);
-    // m_frontRight.setDriveSpeed(forward);
-    // m_backRight.setDriveSpeed(forward);
-    // m_backLeft.setDriveSpeed(forward);
+    m_frontLeft.setDriveSpeed(forward);
+    m_frontRight.setDriveSpeed(forward);
+    m_backRight.setDriveSpeed(forward);
+    m_backLeft.setDriveSpeed(forward);
 
-    // m_frontLeft.setTurnSpeed(rotation);
-    // m_frontRight.setTurnSpeed(rotation);
-    // m_backRight.setTurnSpeed(rotation);
-    // m_backLeft.setTurnSpeed(rotation);
+    m_frontLeft.setTurnSpeed(rotation);
+    m_frontRight.setTurnSpeed(rotation);
+    m_backRight.setTurnSpeed(rotation);
+    m_backLeft.setTurnSpeed(rotation);
 
-    //  setStrafe(forward, strafe, rotation);
+   // System.out.println("controller value: " + strafe);
+   // setStrafe(forward, strafe, rotation);
 
-    m_frontLeft.goToPosition(strafe);
-    m_frontRight.goToPosition(strafe);
-    m_backRight.goToPosition(strafe);
-    m_backLeft.goToPosition(strafe);
+    // m_frontLeft.goToPosition(strafe);
+    // m_frontRight.goToPosition(strafe);
+    // m_backRight.goToPosition(strafe);
+    // m_backLeft.goToPosition(strafe);
 
   }
   
@@ -154,7 +155,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     // SmartDashboard.putNumber("Module 3 Ticks", mSwerveModules[3].getPosition());
     // SmartDashboard.putNumber("Module 3 get current angle", mSwerveModules[3].getCurrentAngle());
 
-
+    //System.out.println("strafe angles: a: " + angles[0] + "b: " + angles[1] + "c: " + angles[2] + "d: " + angles[3]);
     SwerveModuleCANCoder[] modules = { m_frontLeft, m_frontRight, m_backRight, m_backLeft};
     for (int i = 0; i < 4; i++) {
       if (Math.abs(forward) > 0.05 ||

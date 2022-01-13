@@ -114,15 +114,16 @@ public class SwerveModuleCANCoder extends SubsystemBase{
         }
         targetAngle += currentAngle - currentAngleMod;
         targetAngle *= 1024.0 / 360.0;
+      //  System.out.println("target angle: " + targetAngle);
         m_turn.set(ControlMode.Position, targetAngle);
         }
 
      public void setTurnSpeed(double speed) {
          m_turn.set(ControlMode.PercentOutput, speed);
+         
      }
 
      public void goToPosition(double position) {
-         System.out.println(position);
          m_turn.set(ControlMode.Position, position);
      }
     //  public void setPIDSlot(final int slot) {
