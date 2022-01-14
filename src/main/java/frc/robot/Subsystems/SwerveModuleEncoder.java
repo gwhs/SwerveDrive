@@ -8,13 +8,13 @@
 // package frc.robot.subsystems;
 
 // import edu.wpi.first.wpilibj.Encoder;
-// import edu.wpi.first.wpilibj.PWMVictorSPX;
+// import edu.wpi.first.wpilibj.motorcontrol.PWMVictorSPX;
 // import edu.wpi.first.wpilibj.SpeedController;
-// import edu.wpi.first.wpilibj.controller.PIDController;
-// import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
-// import edu.wpi.first.wpilibj.geometry.Rotation2d;
-// import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
-// import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
+// import edu.wpi.first.math.controller.PIDController;
+// import edu.wpi.first.math.controller.ProfiledPIDController;
+// import edu.wpi.first.math.geometry.Rotation2d;
+// import edu.wpi.first.math.kinematics.SwerveModuleState;
+// import edu.wpi.first.math.trajectory.TrapezoidProfile;
 // import com.ctre.phoenix.sensors.CANCoder;
 // // THIS USES ENCODER CLASS
 // public class SwerveModuleEncoder {

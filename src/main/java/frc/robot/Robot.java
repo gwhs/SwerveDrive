@@ -7,10 +7,10 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.GenericHID;
+//import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.subsystems.SwerveDriveSubsystem;
+import frc.robot.Subsystems.SwerveDriveSubsystem;
 
 public class Robot extends TimedRobot {
   private final XboxController m_controller = new XboxController(0);
@@ -30,18 +30,18 @@ public class Robot extends TimedRobot {
   public void driveWithJoystick(boolean fieldRelative) {
     // Get the x speed. We are inverting this because Xbox controllers return
     // negative values when we push forward.
-    double xSpeed = -m_controller.getY(GenericHID.Hand.kLeft) * 0.5; //SwerveDriveSubsystem.kMaxSpeed
+    double xSpeed = -m_controller.getLeftY() * 0.5; //SwerveDriveSubsystem.kMaxSpeed
 
     // Get the y speed or sideways/strafe speed. We are inverting this because
     // we want a positive value when we pull to the left. Xbox controllers
     // return positive values when you pull to the right by default.
-    double ySpeed = -m_controller.getX(GenericHID.Hand.kLeft) * 1; //SwerveDriveSubsystem.kMaxSpeed
+    double ySpeed = -m_controller.getLeftX() * 1; //SwerveDriveSubsystem.kMaxSpeed
 
     // Get the rate of angular rotation. We are inverting this because we want a
     // positive value when we pull to the left (remember, CCW is positive in
     // mathematics). Xbox controllers return positive values when you pull to
     // the right by default.
-    double rot = -m_controller.getX(GenericHID.Hand.kRight) * 0.5; //SwerveDriveSubsystem.kMaxAngularSpeed
+    double rot = -m_controller.getRightX() * 0.5; //SwerveDriveSubsystem.kMaxAngularSpeed
 
 
 		xSpeed = MathUtils.deadband(xSpeed, 0.15);
